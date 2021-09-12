@@ -152,22 +152,50 @@ class SinglyLinkedList {
 
     }
 
+    // moveMinToFront()
+    // find the node with the smallest value in the list
+    // then make it the head of the list by rearranging the nodes
+    // do not just change the values of the nodes
+    // (if two nodes are tied for minimum value, just move one)
+    // this is a two-step process: ID the node with the smallest value,
+    // then rearrange them
+    
+    findMin() {
+        var min = this.head;
+        var runner = this.head.next
+        while(runner != null) {
+            if(runner.value < min.value) {
+                min = runner
+            }
+            runner = runner.next
+        } return min
+    }
+    
+    moveNodeToFront(input) {
+        var runner = this.head
+        while(runner.next != input) {
+            runner = runner.next
+        }
+        runner.next = input.next
+        input.next = this.head
+        this.head = input
+
+    }
+
 }
 
 
 var new_SLL = new SinglyLinkedList();
-new_SLL.addToBack(9);
-new_SLL.addToBack(10);
-new_SLL.addToBack(4);
-new_SLL.addToBack(5);
+new_SLL.addToFront(9);
+new_SLL.addToFront(18);
+new_SLL.addToFront(75);
+new_SLL.addToFront(34);
+new_SLL.addToFront(87);
+new_SLL.addToFront(17);
+new_SLL.addToFront(7);
 console.log(new_SLL.display());
-new_SLL.removeBack();
+
+var min = new_SLL.findMin();
+new_SLL.moveNodeToFront(min);
+
 console.log(new_SLL.display());
-// new_SLL.addToFront(23);
-// new_SLL.addToFront(98);
-// console.log(new_SLL.display());
-// new_SLL.removeFront();
-// console.log(new_SLL.display());
-
-
-

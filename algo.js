@@ -168,7 +168,7 @@ class SinglyLinkedList {
                 min = runner
             }
             runner = runner.next
-        } return min
+        } return min;
     }
     
     moveNodeToFront(input) {
@@ -179,23 +179,64 @@ class SinglyLinkedList {
         runner.next = input.next
         input.next = this.head
         this.head = input
-
     }
 
+    // prependValue(value, target)
+    // create a new ListNode with the given value and insert it into the 
+    // linked list before the node with the target value
+    // if no node with that valueexists, place it at the end
+    // if the value is 9, the target is 4, and the list is 3 - 7 - 4 - 2 - 11
+    // the list becomes 3 - 7 - 9 - 4 - 2 - 11 
+
+    prependValue(value, target) {
+        if(this.head == null && this.tail == null) {
+            this.addToFront(value);
+            // create new linked list with node containing value
+            return null
+        }
+
+        else if(this.head == this.tail) {
+            // add node to front
+            if(this.head.value == target) {
+                this.addToFront(value);
+            }
+            else {
+                this.addToBack(value);
+            }
+            return null;
+        }
+
+        else if (this.head.value == target) {
+            this.addToFront(value);
+        }
+        
+        else {
+            var runner = this.head;
+
+            while (runner.next != null) {
+                if(runner.next.value == target) {
+                    var new_node = new ListNode(value);
+                    new_node.next = runner.next;
+                    runner.next = new_node;
+                    return null
+                }
+                runner = runner.next 
+            }
+            this.addToBack(value);
+
+            return null
+        }
+    }
 }
 
 
 var new_SLL = new SinglyLinkedList();
-new_SLL.addToFront(9);
-new_SLL.addToFront(18);
-new_SLL.addToFront(75);
-new_SLL.addToFront(34);
-new_SLL.addToFront(87);
-new_SLL.addToFront(17);
-new_SLL.addToFront(7);
+new_SLL.addToBack(1);
+new_SLL.addToBack(1);
+new_SLL.addToBack(1);
+new_SLL.addToBack(0);
+new_SLL.addToBack(1);
+new_SLL.addToBack(1);
 console.log(new_SLL.display());
-
-var min = new_SLL.findMin();
-new_SLL.moveNodeToFront(min);
-
+new_SLL.prependValue(9, 0);
 console.log(new_SLL.display());

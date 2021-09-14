@@ -224,19 +224,153 @@ class SinglyLinkedList {
             }
             this.addToBack(value);
 
-            return null
+            return null;
         }
+
+        // secondToLastValue()
+        // return the value of the second-to-last-node in the linked list
+        // if the list has one or zero nodes in it. return undefined
+
+        
+    }
+
+    secondToLastValue() {
+        var runner = this.head;
+
+        if (this.head == this.tail || this.head == null) {
+            return undefined;
+        }
+
+        while (runner.next.next != null) {
+            runner = runner.next;
+        }
+        return runner.value;
+    }
+
+    // partiton(target)
+    // rearrange the nodes in the list so that all nodes with values less than
+    // the target value come first in the list, then all nodes with the target
+    // value, then all nodes with values greater than the target value
+    // if there are no nodes with values greater or less than the target value,
+    // or no nodes with the target value at all, the fuction should still work
+    // if the target is 5, and the list is 8 - 7 - 1 - 5 - 2 - 8 - 3
+    // the list should rearrange so that the nodes are in this order:
+    // 1 - 4 - 2 - 3 - 5 - 5 - 8 - 7 - 8 
+    // order of nodes does not matter as long as the above rules are respected
+
+    partition(target) {
+        var lowerHead = null;
+        var lowerTail = null;
+        var middleHead = null;
+        var middleTail = null;
+        var upperHead = null;
+        var upperTail = null;
+
+        var runner = this.head;
+
+        while (runner != null) {
+            var temp = runner;
+            runner = runner.next;
+
+            temp.next = null;
+
+            if (temp.value < target) {
+                if (lowerHead == null) {
+                    lowerHead = temp;
+                    lowerTail = temp;
+                }
+
+                else {
+                    lowerTail.next = temp;
+                    lowerTail = temp; 
+                }
+            }
+
+            else if (temp.value == target) {
+                if (middleHead == null) {
+                    middleHead = temp;
+                    middleTail = temp;
+                }
+
+                else {
+                    middleTail.next = temp;
+                    middleTail = temp; 
+                }
+            }
+
+            else if (temp.value > target) {
+                if (upperHead == null) {
+                    upperHead = temp;
+                    upperTail = temp;
+                }
+
+                else {
+                    upperTail.next = temp;
+                    upperTail = temp; 
+                }
+            }
+        }
+        // if only nodes greater than the target are found
+        if (lowerHead == null && middleHead == null) {
+            this.head = upperHead;
+            this.tail = upperTail;
+            return null;
+        }
+        // if only nodes less than the target are found
+        if (middleHead == null && upperHead == null) {
+            this.head = lowerHead;
+            this.tail = lowerTail;
+            return null;
+        }
+        // if only nodes with target value are found
+        if (lowerHead == null && upperHead == null) {
+            this.head = middleHead;
+            this.tail = middleTail;
+            return null;
+        }
+
+        // if no nodes less than target are found
+        if (lowerHead == null) {
+            this.head = middleHead;
+            this.tail = upperTail;
+            middleTail.next = upperHead;
+            return null;
+        }
+
+        // if no nodes with target are found
+        if (middleHead == null) {
+            this.head = lowerHead;
+            this.tail = upperTail;
+            lowerTail.next = upperHead;
+            return null;
+        }
+
+        // if no nodes great than target are found
+        if (upperHead == null) {
+            this.head = lowerHead;
+            this.tail = middleTail;
+            lowerTail.next = middleHead;
+            return null;
+        }
+
+        // final case - all three linked list have some kind of data
+        this.head = lowerHead;
+        this.tail = upperTail;
+        lowerTail.next = middleHead;
+        middleTail.next = upperHead; 
+        return null;
     }
 }
 
 
 var new_SLL = new SinglyLinkedList();
+new_SLL.addToBack(7);
+new_SLL.addToBack(3);
+new_SLL.addToBack(5);
+new_SLL.addToBack(4);
 new_SLL.addToBack(1);
-new_SLL.addToBack(1);
-new_SLL.addToBack(1);
-new_SLL.addToBack(0);
-new_SLL.addToBack(1);
-new_SLL.addToBack(1);
+new_SLL.addToBack(6);
+new_SLL.addToBack(2);
 console.log(new_SLL.display());
-new_SLL.prependValue(9, 0);
+console.log(new_SLL.partition(4));
 console.log(new_SLL.display());
